@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>輔大德語 60th 戲劇公演—Peter Pan</title>
+    <title>Leb wohl, Peter Pan! — 輔大德語60th戲劇公演</title>
     <style>
         :root {
             --bg-color: #f0f2f5;
@@ -18,63 +18,40 @@
         }
 
         body { 
-            font-family: sans-serif; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            background-color: var(--bg-color); 
-            padding: 20px 0;
-            margin: 0;
-            overflow-x: hidden;
+            font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif; 
+            display: flex; flex-direction: column; align-items: center; 
+            background-color: var(--bg-color); color: var(--text-dark);
+            padding: 20px 0; margin: 0; overflow-x: hidden;
         }
 
-        h2 { margin-bottom: 10px; color: var(--accent-main); text-align: center; }
-
-        /* 左右滑動提示 */
+        .header-section { text-align: center; margin: 0 15px 15px 15px; }
+        h2 { margin: 0; letter-spacing: 1px; color: var(--accent-main); font-weight: 600; }
+        .sub-title { margin-top: 5px; color: #5c5c5c; font-size: 1.1em; font-weight: bold; }
+        
         .scroll-hint {
-            font-size: 13px;
-            color: var(--accent-blue);
-            margin-bottom: 10px;
-            font-weight: bold;
-            display: block; /* 手機端預設顯示 */
+            font-size: 13px; color: var(--accent-blue); margin-bottom: 10px;
+            font-weight: bold; display: none;
         }
 
-        /* 外部捲動框：確保寬度跟手機螢幕一樣大 */
         .seat-map-outer {
-            width: 100vw;
-            overflow-x: auto;
-            overflow-y: hidden;
-            -webkit-overflow-scrolling: touch;
-            background: #e9ecef;
-            padding: 20px 0;
-            border-top: 1px solid #ddd;
-            border-bottom: 1px solid #ddd;
-        }
-
-        /* 內部地圖實體：強制鎖定 1020px，絕不縮小 */
-        .seat-map-inner {
-            width: 1020px; 
-            margin: 0 auto;
-            display: block;
+            width: 100vw; overflow-x: auto; overflow-y: hidden;
+            -webkit-overflow-scrolling: touch; padding: 10px 0 30px 0;
+            display: block; white-space: nowrap;
         }
 
         .seat-map-container {
-            position: relative;
-            width: 1000px;
-            height: 560px; 
-            background: var(--container-bg);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            border-radius: 12px;
-            margin: 0 10px;
-            overflow: hidden; /* 確保內容不會溢出圓角 */
+            position: relative; display: inline-block;
+            width: 1000px; height: 560px; 
+            background: var(--container-bg); box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border-radius: 16px; border: 1px solid #e9ecef;
+            margin: 0 20px; vertical-align: top; overflow: hidden;
         }
 
         .stage {
-            position: absolute;
-            top: -20px; left: 50%; transform: translateX(-50%);
-            width: 440px; height: 140px; 
-            background: #f8f9fa; border: 1px solid #ddd;
-            border-bottom-left-radius: 220px; border-bottom-right-radius: 220px;
+            position: absolute; top: -25px; left: 50%; transform: translateX(-50%);
+            width: 440px; height: 150px; 
+            background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 1px solid #dee2e6; border-bottom-left-radius: 220px; border-bottom-right-radius: 220px;
             color: #adb5bd; font-size: 16px; font-weight: bold;
             display: flex; align-items: flex-end; justify-content: center;
             padding-bottom: 20px; z-index: 10; letter-spacing: 5px;
@@ -86,13 +63,12 @@
         .row-label { font-size: 11px; font-weight: bold; color: var(--accent-blue); width: 20px; text-align: center; opacity: 0.6; }
 
         .seat {
-            width: 24px; height: 28px; background-color: var(--seat-available); border-radius: 4px;
-            display: flex; align-items: center; justify-content: center;
+            width: 24px; height: 28px; background-color: var(--seat-available); 
+            border-radius: 4px; display: flex; align-items: center; justify-content: center;
             font-size: 10px; font-weight: bold; color: #5c5c5c; cursor: pointer; 
-            transition: transform 0.1s; box-shadow: 0 2px 0 rgba(0,0,0,0.05);
+            transition: all 0.15s ease; box-shadow: 0 2px 0 rgba(0,0,0,0.05);
         }
 
-        .seat:active { transform: scale(0.9); }
         .seat.selected { background-color: var(--seat-selected) !important; color: white; }
         .seat.booked { background-color: var(--seat-booked); color: #adb5bd; cursor: not-allowed; }
         .seat-spacer { width: 24px; height: 28px; }
@@ -100,54 +76,68 @@
         .booking-panel { 
             background: #ffffff; padding: 25px; border-radius: 16px; 
             width: 380px; max-width: 90%; box-shadow: 0 10px 25px rgba(0,0,0,0.05); 
-            border: 1px solid #e9ecef; margin-top: 20px;
+            border: 1px solid #e9ecef; margin-top: 5px;
         }
 
+        .lang-label { font-size: 12px; color: var(--text-muted); font-weight: bold; margin-bottom: 5px; display: block; }
         .booking-panel input, .booking-panel select { 
-            width: 100%; padding: 12px; margin: 8px 0; 
-            background: #f8f9fa; border: 1px solid #ced4da; border-radius: 8px; 
-            font-size: 16px; box-sizing: border-box;
+            width: 100%; padding: 12px; margin: 8px 0; background: #f8f9fa;
+            border: 1px solid #ced4da; border-radius: 8px; font-size: 15px; box-sizing: border-box;
         }
 
         .button-group { display: flex; gap: 12px; margin-top: 15px; }
-        .booking-panel button { padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; flex: 1; }
+        .booking-panel button { padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; flex: 1; line-height: 1.4; }
         #submitBtn { background: #2c3e50; color: white; flex: 2; }
         #cancelBtn { background: #fff; color: #adb5bd; border: 1px solid #dee2e6; }
+
+        @media (max-width: 1000px) { .scroll-hint { display: block; text-align: center; } }
+        .hint { font-size: 12px; color: var(--text-muted); margin-top: 15px; text-align: center; line-height: 1.6; }
     </style>
 </head>
 <body>
 
-    <h2>輔大德語 60th 戲劇公演—Peter Pan</h2>
+    <div class="header-section">
+        <h2>輔大德語60th戲劇公演—再見，彼得潘！</h2>
+        <div class="sub-title">Leb wohl, Peter Pan!</div>
+    </div>
     
-    <div class="scroll-hint">⬅ 左右滑動選取座位 ➡</div>
+    <div class="scroll-hint">⬅ Wischen für Sitzplan / 左右滑動選取座位 ➡</div>
 
-    <div class="seat-map-outer" id="scrollBox">
-        <div class="seat-map-inner">
-            <div class="seat-map-container" id="seatMap">
-                <div class="stage">S T A G E</div>
-            </div>
+    <div class="seat-map-outer" id="scrollContainer">
+        <div class="seat-map-container" id="seatMap">
+            <div class="stage">B Ü H N E / 舞 台</div>
         </div>
     </div>
 
     <div class="booking-panel">
+        <span class="lang-label">DATUM WÄHLEN / 選擇場次</span>
         <select id="showDate" onchange="changeDate()">
-            <option value="0508">2026年5月8日 (週五)</option>
-            <option value="0509">2026年5月9日 (週六)</option>
+            <option value="0508">2026/05/08 (Fr. / 週五)</option>
+            <option value="0509">2026/05/09 (Sa. / 週六)</option>
         </select>
 
-        <p style="margin: 10px 0; font-size: 14px;">已選座位：<span id="selected-list" style="color:var(--accent-blue); font-weight:bold;">無</span></p>
+        <p style="margin: 10px 0; font-size: 14px;">
+            Sitzplatz / 已選座位：<span id="selected-list" style="color:var(--accent-blue); font-weight:bold;">無</span>
+        </p>
         
-        <input type="text" id="userName" placeholder="姓名">
-        <input type="text" id="userPhone" placeholder="電話 (身分驗證用)">
-        <input type="email" id="userEmail" placeholder="電子信箱">
+        <input type="text" id="userName" placeholder="Name / 姓名">
+        <input type="text" id="userPhone" placeholder="Telefon (09...) / 電話">
+        <input type="email" id="userEmail" placeholder="E-Mail / 電子信箱">
         
         <div class="button-group">
-            <button id="submitBtn" onclick="submitBooking()">確認訂位</button>
-            <button id="cancelBtn" onclick="cancelBooking()">取消訂位</button>
+            <button id="submitBtn" onclick="submitBooking()">RESERVIEREN<br>確認訂位</button>
+            <button id="cancelBtn" onclick="cancelBooking()">STORNO<br>取消訂位</button>
+        </div>
+        
+        <div class="hint">
+            💡 <b>Stornierung / 取消訂位:</b><br>
+            Sitzplatz wählen & Telefonnr. eingeben.<br>
+            請點選座位並輸入原始電話。
         </div>
     </div>
 
     <script>
+        // 注意：請務必將下方的 API_URL 替換為您最新的 Google Apps Script 網址
         const API_URL = 'https://script.google.com/macros/s/AKfycbwLtzWHUjktlyS4pXfEUTKYVkXHhlhKqZCN41rxqKUNIw9vrtiZK-UwwCBw1t3wWgXU/exec'; 
         const ROW_NAMES = ['A', 'B', 'C', 'D', 'E'];
 
@@ -199,10 +189,9 @@
             container.appendChild(blockEl);
         });
 
-        // 強制捲動到中心
         window.addEventListener('load', () => {
-            const box = document.getElementById('scrollBox');
-            box.scrollLeft = (1020 - window.innerWidth) / 2;
+            const scrollBox = document.getElementById('scrollContainer');
+            scrollBox.scrollLeft = (1000 - window.innerWidth + 40) / 2; 
         });
 
         let selectedSeats = [];
@@ -246,29 +235,31 @@
         }
 
         async function submitBooking() {
-            if (selectedSeats.length === 0) return alert("請先選取座位");
+            if (selectedSeats.length === 0) return alert("Bitte Plätze wählen! / 請先選取座位");
             const name = document.getElementById('userName').value;
             const phone = document.getElementById('userPhone').value;
-            if (!name || !phone) return alert("請填寫姓名與電話");
+            const email = document.getElementById('userEmail').value;
+            if (!name || !phone) return alert("Name/Tel. erforderlich! / 請填寫姓名與電話");
+
             const btn = document.getElementById('submitBtn');
-            btn.disabled = true; btn.textContent = "傳送中...";
+            btn.disabled = true; btn.textContent = "Senden...";
             try {
                 const response = await fetch(API_URL, {
                     method: 'POST',
-                    body: JSON.stringify({ date: currentDate, seats: selectedSeats, name: name, phone: phone, email: document.getElementById('userEmail').value })
+                    body: JSON.stringify({ date: currentDate, seats: selectedSeats, name: name, phone: phone, email: email })
                 });
                 const result = await response.json();
                 alert(result.message);
                 if (result.success) location.reload();
-            } catch (err) { alert("連線異常"); }
-            btn.disabled = false; btn.textContent = "確認訂位";
+            } catch (err) { alert("Fehler! / 連線異常"); }
+            btn.disabled = false; btn.textContent = "RESERVIEREN / 確認訂位";
         }
 
         async function cancelBooking() {
-            if (selectedSeats.length === 0) return alert("請選取要取消的座位");
+            if (selectedSeats.length === 0) return alert("Platz wählen! / 請選位");
             const phone = document.getElementById('userPhone').value;
-            if (!phone) return alert("請輸入驗證電話");
-            if (!confirm(`確定要取消座位 ${selectedSeats.join(', ')} 嗎？`)) return;
+            if (!phone) return alert("Telefonnr. erforderlich! / 請輸入電話");
+            if (!confirm(`Abbrechen? / 確定要取消座位 ${selectedSeats.join(', ')} 嗎？`)) return;
             const btn = document.getElementById('cancelBtn');
             btn.disabled = true;
             try {
@@ -279,7 +270,7 @@
                 const result = await response.json();
                 alert(result.message);
                 if (result.success) location.reload();
-            } catch (err) { alert("連線失敗"); }
+            } catch (err) { alert("Fehler! / 連線失敗"); }
             btn.disabled = false;
         }
 
