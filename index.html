@@ -41,8 +41,8 @@
 
         .seat-map-container {
             position: relative; display: inline-block;
-            width: 1100px; /* 增加寬度以容納外推的兩翼 */
-            height: 580px; 
+            width: 1200px; /* 寬度增加以容納更寬的兩翼 */
+            height: 600px; 
             background: var(--container-bg); box-shadow: 0 10px 30px rgba(0,0,0,0.08);
             border-radius: 16px; border: 1px solid #e9ecef;
             margin: 0 20px; vertical-align: top; overflow: hidden;
@@ -91,7 +91,7 @@
         #submitBtn { background: #2c3e50; color: white; flex: 2; }
         #cancelBtn { background: #fff; color: #adb5bd; border: 1px solid #dee2e6; }
 
-        @media (max-width: 1100px) { .scroll-hint { display: block; text-align: center; } }
+        @media (max-width: 1200px) { .scroll-hint { display: block; text-align: center; } }
         .hint { font-size: 12px; color: var(--text-muted); margin-top: 15px; text-align: center; line-height: 1.6; }
     </style>
 </head>
@@ -138,19 +138,19 @@
     </div>
 
     <script>
-        // 請務必替換為您最新的 Google Apps Script 網址
+        // 注意：請替換為您目前的 Web App 網址
         const API_URL = 'https://script.google.com/macros/s/AKfycbwLtzWHUjktlyS4pXfEUTKYVkXHhlhKqZCN41rxqKUNIw9vrtiZK-UwwCBw1t3wWgXU/exec'; 
         const ROW_NAMES = ['A', 'B', 'C', 'D', 'E'];
 
         const seatLayoutConfig = [
             { 
-                // 左翼：向外移動 2 格 (原 left: 85px -> 改為 25px)
-                id: 'LeftWing', type: 'rows', css: 'top: 110px; left: 25px; transform: rotate(60deg);',
+                // 左翼：向外移動 3 格 (從 25px 再往左推 60px -> -35px)
+                id: 'LeftWing', type: 'rows', css: 'top: 110px; left: -35px; transform: rotate(60deg);',
                 data: [[12, null, null, 10], [16, 14, null, null, 12, 10], [22, 20, 18, null, null, 16, 14, null], [32, 30, 28, 26, 24, 22, 20, 18, 16, 14], [28, 26, 24, 22, 20, 18, 16, 14, 12, 10, 8]] 
             },
             { 
-                // 右翼：向外移動 2 格 (原 right: 85px -> 改為 25px)
-                id: 'RightWing', type: 'rows', css: 'top: 110px; right: 25px; transform: rotate(-60deg);',
+                // 右翼：向外移動 3 格 (從 25px 再往右推 60px -> -35px)
+                id: 'RightWing', type: 'rows', css: 'top: 110px; right: -35px; transform: rotate(-60deg);',
                 data: [[9, null, null, 11], [11, 13, null, null, 15, 17], [null, 13, 15, null, null, 17, 19, 21], [13, 15, 17, 19, 21, 23, 25, 27, 29, 31], [7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27]] 
             },
             { id: 'CenterLeft', type: 'rows', css: 'top: 310px; right: 51.5%; transform: rotate(12deg);',
@@ -198,7 +198,8 @@
 
         window.addEventListener('load', () => {
             const scrollBox = document.getElementById('scrollContainer');
-            scrollBox.scrollLeft = (1100 - window.innerWidth + 40) / 2; 
+            // 修正自動置中偏移量，以 1200px 為基準
+            scrollBox.scrollLeft = (1200 - window.innerWidth + 40) / 2; 
         });
 
         let selectedSeats = [];
@@ -263,7 +264,7 @@
         }
 
         async function cancelBooking() {
-            if (selectedSeats.length === 0) return alert("Sitzplatz wählen! / 請選位");
+            if (selectedSeats.length === 0) return alert("Platz wählen! / 請選位");
             const phone = document.getElementById('userPhone').value;
             if (!phone) return alert("Telefonnr. erforderlich! / 請輸入電話");
             if (!confirm(`Abbrechen? / 確定要取消座位 ${selectedSeats.join(', ')} 嗎？`)) return;
