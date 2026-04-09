@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>輔大德語60th戲劇公演—Leb wohl, Peter Pan!</title>
+    <title>Leb wohl, Peter Pan! — 輔大德語60th戲劇公演</title>
     <style>
         :root {
             --bg-color: #f0f2f5;
@@ -27,42 +27,41 @@
             color: var(--text-dark);
             padding: 20px 0;
             margin: 0;
-            overflow-x: hidden; /* 防止整個網頁晃動 */
+            overflow-x: hidden;
         }
 
-        h2 { margin: 0 15px 15px 15px; letter-spacing: 1px; color: var(--accent-main); font-weight: 600; text-align: center; }
+        h2 { margin: 0 15px 5px 15px; letter-spacing: 1px; color: var(--accent-main); font-weight: 600; text-align: center; }
+        .sub-title { margin-bottom: 20px; color: #5c5c5c; font-size: 1.1em; font-weight: bold; }
         
-        /* 滾動提示文字 */
+        /* 滾動提示 */
         .scroll-hint {
             font-size: 13px;
             color: var(--accent-blue);
             margin-bottom: 10px;
             font-weight: bold;
-            display: none; /* 預設隱藏，手機才顯示 */
+            display: none;
         }
 
-        /* 外層捲軸容器 */
         .seat-map-outer {
             width: 100vw;
-            overflow-x: auto; /* 強制橫向捲動 */
+            overflow-x: auto;
             overflow-y: hidden;
             -webkit-overflow-scrolling: touch;
             padding: 10px 0 30px 0;
             display: block;
-            white-space: nowrap; /* 防止內部元素折行 */
+            white-space: nowrap;
         }
 
-        /* 內層地圖實體 */
         .seat-map-container {
             position: relative;
-            display: inline-block; /* 重要：讓容器寬度由內容決定 */
-            width: 1000px; /* 固定寬度 */
+            display: inline-block;
+            width: 1000px; 
             height: 560px; 
             background: var(--container-bg);
             box-shadow: 0 10px 30px rgba(0,0,0,0.08);
             border-radius: 16px;
             border: 1px solid #e9ecef;
-            margin: 0 20px; /* 左右留白讓滑動到底時有空間 */
+            margin: 0 20px;
             vertical-align: top;
             overflow: hidden;
         }
@@ -122,6 +121,8 @@
             margin-top: 5px;
         }
 
+        .lang-label { font-size: 12px; color: var(--text-muted); font-weight: bold; margin-bottom: 5px; display: block; }
+        
         .booking-panel select, .booking-panel input { 
             width: 100%; 
             padding: 12px; 
@@ -129,7 +130,7 @@
             background: #f8f9fa;
             border: 1px solid #ced4da; 
             border-radius: 8px; 
-            font-size: 16px; /* 避免 iOS 縮放 */
+            font-size: 15px;
             box-sizing: border-box;
         }
 
@@ -139,44 +140,49 @@
         #cancelBtn { background: #fff; color: #adb5bd; border: 1px solid #dee2e6; }
 
         @media (max-width: 1000px) {
-            .scroll-hint { display: block; }
+            .scroll-hint { display: block; text-align: center; }
         }
 
-        .hint { font-size: 12px; color: var(--text-muted); margin-top: 15px; text-align: center; }
+        .hint { font-size: 12px; color: var(--text-muted); margin-top: 15px; text-align: center; line-height: 1.6; }
     </style>
 </head>
 <body>
 
-    <h2>輔大德語60th戲劇公演—Leb wohl, Peter Pan!</h2>
+    <h2>輔大德語60th戲劇公演—再見，彼得潘！</h2>
+    <div class="sub-title">60. Jährliches Theaterprojekt der FJU Germanistik: Leb wohl, Peter Pan!</div>
     
-    <div class="scroll-hint">⬅ 左右滑動地圖選取座位 ➡</div>
+    <div class="scroll-hint">⬅ Wischen für Sitzplan / 左右滑動選取座位 ➡</div>
 
     <div class="seat-map-outer" id="scrollContainer">
         <div class="seat-map-container" id="seatMap">
-            <div class="stage">S T A G E</div>
-            </div>
+            <div class="stage">B Ü H N E / 舞 台</div>
+        </div>
     </div>
 
     <div class="booking-panel">
-        <label style="font-size: 12px; color: var(--text-muted); font-weight: bold;">SELECT DATE</label>
+        <span class="lang-label">DATUM WÄHLEN / 選擇場次</span>
         <select id="showDate" onchange="changeDate()">
-            <option value="0508">2026年5月8日 (週五)</option>
-            <option value="0509">2026年5月9日 (週六)</option>
+            <option value="0508">2026/05/08 (Fr. / 週五)</option>
+            <option value="0509">2026/05/09 (Sa. / 週六)</option>
         </select>
 
-        <p style="margin: 10px 0; font-size: 14px;">已選座位：<span id="selected-list">無</span></p>
+        <p style="margin: 10px 0; font-size: 14px;">
+            Sitzplatz / 已選座位：<span id="selected-list" style="color:var(--accent-blue); font-weight:bold;">無</span>
+        </p>
         
-        <input type="text" id="userName" placeholder="姓名">
-        <input type="text" id="userPhone" placeholder="電話 (身分驗證用)">
-        <input type="email" id="userEmail" placeholder="電子信箱">
+        <input type="text" id="userName" placeholder="Name / 姓名">
+        <input type="text" id="userPhone" placeholder="Telefon (09...) / 電話">
+        <input type="email" id="userEmail" placeholder="E-Mail / 電子信箱">
         
         <div class="button-group">
-            <button id="submitBtn" onclick="submitBooking()">確認訂位</button>
-            <button id="cancelBtn" onclick="cancelBooking()">取消訂位</button>
+            <button id="submitBtn" onclick="submitBooking()">RESERVIEREN<br>確認訂位</button>
+            <button id="cancelBtn" onclick="cancelBooking()">STORNO<br>取消訂位</button>
         </div>
         
         <div class="hint">
-            💡 取消訂位請點選原座位並輸入原始電話
+            💡 <b>Stornierung / 取消訂位:</b><br>
+            Sitzplatz wählen & Telefonnr. eingeben.<br>
+            請點選座位並輸入原始電話。
         </div>
     </div>
 
@@ -232,12 +238,9 @@
             container.appendChild(blockEl);
         });
 
-        // 自動捲動到地圖中心
         window.addEventListener('load', () => {
             const scrollBox = document.getElementById('scrollContainer');
-            const mapWidth = 1000;
-            const screenWidth = window.innerWidth;
-            scrollBox.scrollLeft = (mapWidth - screenWidth + 40) / 2; 
+            scrollBox.scrollLeft = (1000 - window.innerWidth + 40) / 2; 
         });
 
         let selectedSeats = [];
@@ -259,69 +262,4 @@
                     if (data[seatEl.id] === 'Booked') seatEl.classList.add('booked');
                     else seatEl.classList.remove('booked');
                 });
-            } catch (err) { console.error("同步失敗"); }
-        }
-
-        document.getElementById('seatMap').addEventListener('click', (e) => {
-            if (e.target.classList.contains('seat')) {
-                const id = e.target.id;
-                if (e.target.classList.contains('selected')) {
-                    e.target.classList.remove('selected');
-                    selectedSeats = selectedSeats.filter(s => s !== id);
-                } else {
-                    e.target.classList.add('selected');
-                    selectedSeats.push(id);
-                }
-                updateSelectedList();
-            }
-        });
-
-        function updateSelectedList() {
-            document.getElementById('selected-list').textContent = selectedSeats.length > 0 ? selectedSeats.join(', ') : '無';
-        }
-
-        async function submitBooking() {
-            if (selectedSeats.length === 0) return alert("請先選取座位");
-            const name = document.getElementById('userName').value;
-            const phone = document.getElementById('userPhone').value;
-            if (!name || !phone) return alert("請填寫姓名與電話");
-            const btn = document.getElementById('submitBtn');
-            btn.disabled = true;
-            btn.textContent = "傳送中...";
-            try {
-                const response = await fetch(API_URL, {
-                    method: 'POST',
-                    body: JSON.stringify({ date: currentDate, seats: selectedSeats, name: name, phone: phone, email: document.getElementById('userEmail').value })
-                });
-                const result = await response.json();
-                alert(result.message);
-                if (result.success) location.reload();
-            } catch (err) { alert("連線異常"); }
-            btn.disabled = false;
-            btn.textContent = "訂位確認信已寄出";
-        }
-
-        async function cancelBooking() {
-            if (selectedSeats.length === 0) return alert("請選取要取消的座位");
-            const phone = document.getElementById('userPhone').value;
-            if (!phone) return alert("請輸入驗證電話");
-            if (!confirm(`確定要取消座位 ${selectedSeats.join(', ')} 嗎？`)) return;
-            const btn = document.getElementById('cancelBtn');
-            btn.disabled = true;
-            try {
-                const response = await fetch(API_URL, {
-                    method: 'POST',
-                    body: JSON.stringify({ action: "cancel", date: currentDate, seats: selectedSeats, phone: phone })
-                });
-                const result = await response.json();
-                alert(result.message);
-                if (result.success) location.reload();
-            } catch (err) { alert("連線失敗"); }
-            btn.disabled = false;
-        }
-
-        fetchSeatStatus();
-        setInterval(fetchSeatStatus, 30000); 
-    </script>
-</body>
-</html>
+            } catch (err) { console.error("同步
