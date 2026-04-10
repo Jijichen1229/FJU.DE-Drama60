@@ -10,6 +10,7 @@
             --container-bg: #ffffff;
             --accent-main: #2c3e50;
             --accent-blue: #3498db;
+            --accent-red: #ff6b6b;
             --seat-available: #ffd43b;
             --seat-booked: #dee2e6;
             --seat-selected: #51cf66;
@@ -19,67 +20,117 @@
 
         body { 
             font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif; 
-            display: flex; flex-direction: column; align-items: center; 
-            background-color: var(--bg-color); color: var(--text-dark);
-            padding: 20px 0; margin: 0; overflow-x: hidden;
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            background-color: var(--bg-color); 
+            color: var(--text-dark);
+            padding: 20px 0;
+            margin: 0;
+            overflow-x: hidden;
         }
 
         h2 { margin: 0 15px 5px 15px; letter-spacing: 1px; color: var(--accent-main); font-weight: 600; text-align: center; }
         .sub-title { margin-bottom: 20px; color: #5c5c5c; font-size: 1.1em; font-weight: bold; }
         
-        .scroll-hint { font-size: 13px; color: var(--accent-blue); margin-bottom: 10px; font-weight: bold; display: none; }
+        .scroll-hint {
+            font-size: 13px;
+            color: var(--accent-blue);
+            margin-bottom: 10px;
+            font-weight: bold;
+            display: none;
+        }
 
         .seat-map-outer {
-            width: 100vw; overflow-x: auto; overflow-y: hidden;
-            -webkit-overflow-scrolling: touch; padding: 10px 0 30px 0;
-            display: block; white-space: nowrap;
+            width: 100vw;
+            overflow-x: auto;
+            overflow-y: hidden;
+            -webkit-overflow-scrolling: touch;
+            padding: 10px 0 30px 0;
+            display: block;
+            white-space: nowrap;
         }
 
         .seat-map-container {
-            position: relative; display: inline-block;
-            width: 1000px; height: 560px; 
-            background: var(--container-bg); box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-            border-radius: 16px; border: 1px solid #e9ecef;
-            margin: 0 20px; vertical-align: top; overflow: hidden;
+            position: relative;
+            display: inline-block;
+            width: 1000px; 
+            height: 560px; 
+            background: var(--container-bg);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border-radius: 16px;
+            border: 1px solid #e9ecef;
+            margin: 0 20px;
+            vertical-align: top;
+            overflow: hidden;
         }
 
         .stage {
-            position: absolute; top: -25px; left: 50%; transform: translateX(-50%);
-            width: 440px; height: 150px; 
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 440px; 
+            height: 150px; 
             background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);
-            border: 1px solid #dee2e6; border-bottom-left-radius: 220px; border-bottom-right-radius: 220px;
-            color: #adb5bd; font-size: 16px; font-weight: bold;
-            display: flex; align-items: flex-end; justify-content: center;
-            padding-bottom: 20px; z-index: 10; letter-spacing: 8px;
+            border: 1px solid #dee2e6;
+            border-bottom-left-radius: 220px;
+            border-bottom-right-radius: 220px;
+            color: #adb5bd;
+            font-size: 16px;
+            font-weight: bold;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 20px;
+            z-index: 10;
+            letter-spacing: 8px;
         }
 
         .block { position: absolute; display: flex; gap: 6px; }
         .block-rows { flex-direction: column; gap: 6px; }
         .row { display: flex; gap: 6px; align-items: center; white-space: nowrap; }
+        .row-center { justify-content: center; width: 100%; }
         .row-label { font-size: 11px; font-weight: bold; color: var(--accent-blue); width: 20px; text-align: center; opacity: 0.6; }
 
         .seat {
-            width: 24px; height: 28px; background-color: var(--seat-available); 
-            border-radius: 4px; display: flex; align-items: center; justify-content: center;
-            font-size: 10px; font-weight: bold; color: #5c5c5c; cursor: pointer; 
-            transition: all 0.15s ease; box-shadow: 0 2px 0 rgba(0,0,0,0.05);
+            width: 24px; height: 28px; 
+            background-color: var(--seat-available); 
+            border-radius: 4px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 10px; font-weight: bold; color: #5c5c5c;
+            cursor: pointer; 
+            transition: all 0.15s ease; 
+            box-shadow: 0 2px 0 rgba(0,0,0,0.05);
         }
 
+        .seat:hover { transform: scale(1.15); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
         .seat.selected { background-color: var(--seat-selected) !important; color: white; }
         .seat.booked { background-color: var(--seat-booked); color: #adb5bd; cursor: not-allowed; }
         .seat-spacer { width: 24px; height: 28px; }
 
         .booking-panel { 
-            background: #ffffff; padding: 25px; border-radius: 16px; 
-            width: 380px; max-width: 90%; box-shadow: 0 10px 25px rgba(0,0,0,0.05); 
-            border: 1px solid #e9ecef; margin-top: 5px;
+            background: #ffffff; 
+            padding: 25px; 
+            border-radius: 16px; 
+            width: 380px; 
+            max-width: 90%; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05); 
+            border: 1px solid #e9ecef;
+            margin-top: 5px;
         }
 
         .lang-label { font-size: 12px; color: var(--text-muted); font-weight: bold; margin-bottom: 5px; display: block; }
 
         .booking-panel select, .booking-panel input { 
-            width: 100%; padding: 12px; margin: 8px 0; background: #f8f9fa;
-            border: 1px solid #ced4da; border-radius: 8px; font-size: 15px; box-sizing: border-box;
+            width: 100%; 
+            padding: 12px; 
+            margin: 8px 0; 
+            background: #f8f9fa;
+            border: 1px solid #ced4da; 
+            border-radius: 8px; 
+            font-size: 15px; 
+            box-sizing: border-box;
         }
 
         .button-group { display: flex; gap: 12px; margin-top: 15px; }
@@ -87,7 +138,10 @@
         #submitBtn { background: #2c3e50; color: white; flex: 2; }
         #cancelBtn { background: #fff; color: #adb5bd; border: 1px solid #dee2e6; }
 
-        @media (max-width: 1000px) { .scroll-hint { display: block; text-align: center; } }
+        @media (max-width: 1000px) {
+            .scroll-hint { display: block; text-align: center; }
+        }
+
         .hint { font-size: 12px; color: var(--text-muted); margin-top: 15px; text-align: center; line-height: 1.6; }
     </style>
 </head>
@@ -101,14 +155,14 @@
     <div class="seat-map-outer" id="scrollContainer">
         <div class="seat-map-container" id="seatMap">
             <div class="stage">S T A G E</div>
-        </div>
+            </div>
     </div>
 
     <div class="booking-panel">
         <span class="lang-label">DATUM & UHRZEIT / 選擇場次時間</span>
         <select id="showDate" onchange="changeDate()">
-            <option value="0508">5/8 (Fr./週五) 18:30 - 21:00</option>
-            <option value="0509">5/9 (Sa./週六) 14:00 - 16:30</option>
+            <option value="0508">2026/05/08 (Fr. / 週五) 18:30-21:00</option>
+            <option value="0509">2026/05/09 (Sa. / 週六) 14:00-16:30</option>
         </select>
 
         <p style="margin: 10px 0; font-size: 14px;">
@@ -185,7 +239,9 @@
 
         window.addEventListener('load', () => {
             const scrollBox = document.getElementById('scrollContainer');
-            scrollBox.scrollLeft = (1000 - window.innerWidth + 40) / 2; 
+            const mapWidth = 1000;
+            const screenWidth = window.innerWidth;
+            scrollBox.scrollLeft = (mapWidth - screenWidth + 40) / 2; 
         });
 
         let selectedSeats = [];
@@ -234,7 +290,8 @@
             const phone = document.getElementById('userPhone').value;
             if (!name || !phone) return alert("Name/Tel. erforderlich! / 請填寫姓名與電話");
             const btn = document.getElementById('submitBtn');
-            btn.disabled = true; btn.textContent = "Senden...";
+            btn.disabled = true;
+            btn.textContent = "Senden...";
             try {
                 const response = await fetch(API_URL, {
                     method: 'POST',
@@ -243,12 +300,13 @@
                 const result = await response.json();
                 alert(result.message);
                 if (result.success) location.reload();
-            } catch (err) { alert("連線失敗 / Fehler"); }
-            btn.disabled = false; btn.textContent = "RESERVIEREN / 確認訂位";
+            } catch (err) { alert("連線異常 / Fehler"); }
+            btn.disabled = false;
+            btn.textContent = "RESERVIEREN / 確認訂位";
         }
 
         async function cancelBooking() {
-            if (selectedSeats.length === 0) return alert("Platz wählen! / 請選位");
+            if (selectedSeats.length === 0) return alert("Sitzplatz wählen! / 請選取座位");
             const phone = document.getElementById('userPhone').value;
             if (!phone) return alert("Telefonnr. erforderlich! / 請輸入電話");
             if (!confirm(`Abbrechen? / 確定要取消座位 ${selectedSeats.join(', ')} 嗎？`)) return;
